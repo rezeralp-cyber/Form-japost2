@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Form Jasa Posting - LUUNASTORE</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #0f0f1a;
+      min-height: 100vh;
+      padding: 0 0 60px;
+      color: #fff;
+    }   
+    .header {
+      background: linear-gradient(135deg, #1a1a3e, #0f3460);
+      text-align: center;
+      padding: 28px 20px 22px;
+      border-bottom: 2px solid #1e5fa8;
+    }
+    .header h1 { font-size: 20px; font-weight: 900; color: #fff; letter-spacing: 1px; }
+    .header p { color: #60a5fa; font-size: 12px; margin-top: 4px; }
+
+    .form-wrap { padding: 20px 16px; max-width: 500px; margin: 0 auto; }
+
+    .section-title {
+      font-size: 11px; font-weight: 800; letter-spacing: 1.5px;
+      text-transform: uppercase; color: #60a5fa;
+      margin: 22px 0 12px; display: flex; align-items: center; gap: 8px;
+    }
+    .section-title::after { content:''; flex:1; height:1px; background:#1e1e35; }
+
+    .field { margin-bottom: 12px; }
+    .field label {
+      display: block; font-size: 12px; font-weight: 700;
+      color: #93c5fd; margin-bottom: 6px;
+    }
+    .field label .opt { font-size: 10px; color: #475569; font-weight: 400; margin-left: 4px; }
+    .field input, .field textarea {
+      width: 100%; padding: 12px 14px;
+      background: #1a1a2e; border: 1.5px solid #2a2a4a;
+      border-radius: 10px; color: #fff; font-size: 14px;
+      font-family: inherit; outline: none;
+      transition: border-color .2s;
+    }
+    .field input:focus, .field textarea:focus { border-color: #3b82f6; }
+    .field input::placeholder, .field textarea::placeholder { color: #374151; }
+    .field textarea { resize: none; height: 80px; }
+
+    /* LOGIN VIA CHIPS */
+    .login-section { margin-bottom: 12px; }
+    .login-label { font-size: 12px; font-weight: 700; color: #93c5fd; margin-bottom: 8px; display: block; }
+    .chips-group-label {
+      font-size: 10px; font-weight: 700; color: #475569;
+      letter-spacing: 1px; text-transform: uppercase;
+      margin: 10px 0 6px;
+    }
+    .chips { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 4px; }
+    .chip {
+      padding: 7px 13px;
+      background: #1a1a2e; border: 1.5px solid #2a2a4a;
+      border-radius: 20px; cursor: pointer;
+      font-size: 12px; font-weight: 600; color: #6b7280;
+      transition: all .2s; user-select: none; white-space: nowrap;
+    }
+    .chip:hover { border-color: #3b82f6; color: #93c5fd; }
+    .chip.selected { border-color: #3b82f6; color: #93c5fd; background: rgba(59,130,246,.15); }
+    .login-manual {
+      margin-top: 10px;
+      width: 100%; padding: 11px 14px;
+      background: #1a1a2e; border: 1.5px solid #2a2a4a;
+      border-radius: 10px; color: #fff; font-size: 13px;
+      font-family: inherit; outline: none; transition: border-color .2s;
+    }
+    .login-manual:focus { border-color: #3b82f6; }
+    .login-manual::placeholder { color: #374151; font-size: 12px; }
+
+    .radio-group { display: flex; gap: 8px; flex-wrap: wrap; }
+    .radio-btn {
+      padding: 9px 16px;
+      background: #1a1a2e; border: 1.5px solid #2a2a4a;
+      border-radius: 10px; cursor: pointer;
+      font-size: 13px; font-weight: 600; color: #6b7280;
+      transition: all .2s; user-select: none;
+    }
+    .radio-btn.selected { border-color: #3b82f6; color: #93c5fd; background: rgba(59,130,246,.15); }
+
+    .gen-btn {
+      width: 100%; padding: 16px; margin-top: 24px;
+      background: linear-gradient(135deg, #1d4ed8, #7c3aed);
+      border: none; border-radius: 14px; color: #fff;
+      font-size: 16px; font-weight: 800; cursor: pointer;
+      font-family: inherit; transition: opacity .2s;
+    }
+    .gen-btn:hover { opacity: .9; }
+
+    .result-section { display: none; max-width: 500px; margin: 0 auto; padding: 16px 16px 20px; }
+    .result-title { font-size: 14px; font-weight: 800; color: #fff; margin-bottom: 12px; }
+    .result-box {
+      background: #1a1a2e; border: 1.5px solid #2a2a4a;
+      border-radius: 14px; padding: 18px;
+      font-size: 13px; line-height: 1.9;
+      white-space: pre-wrap; color: #e2e8f0;
+      font-family: 'Courier New', monospace;
+      margin-bottom: 12px;
+    }
+    .action-btns { display: flex; gap: 10px; }
+    .copy-btn {
+      flex: 1; padding: 14px;
+      background: #1a1a2e; border: 1.5px solid #2a2a4a;
+      border-radius: 12px; color: #93c5fd;
+      font-size: 14px; font-weight: 700; cursor: pointer; font-family: inherit;
+    }
+    .copy-btn.copied { border-color: #10b981; color: #34d399; background: rgba(16,185,129,.1); }
+    .wa-btn {
+      flex: 1; padding: 14px;
+      background: #25D366; border: none;
+      border-radius: 12px; color: #fff;
+      font-size: 14px; font-weight: 800; cursor: pointer; font-family: inherit;
+    }
+    .edit-btn {
+      width: 100%; padding: 12px; margin-top: 10px;
+      background: transparent; border: 1px solid #2a2a4a;
+      border-radius: 12px; color: #6b7280;
+      font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit;
+    }
+
+    .toast {
+      position: fixed; bottom: 24px; left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background: #22c55e; color: #fff; padding: 12px 24px;
+      border-radius: 30px; font-weight: 700; font-size: 13px;
+      transition: transform .3s; z-index: 999; white-space: nowrap;
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <h1>🎮 FORM JASA POSTING</h1>
+  <p>LUUNASTORE • Isi form → format otomatis siap kirim</p>
+</div>
+
+<div class="form-wrap" id="form-section">
+
+  <div class="section-title">Info Penjual</div>
+
+  <div class="field">
+    <label>Nomor HP Seller <span class="opt">(untuk kode penjual otomatis)</span></label>
+    <input type="tel" id="nohp" placeholder="Contoh: 082123154354"/>
+  </div>
+
+  <div class="section-title">Detail Akun</div>
+
+  <div class="field">
+    <label>Game / Produk</label>
+    <input type="text" id="game" placeholder="Contoh: Blue Archive, Free Fire, Genshin..."/>
+  </div>
+
+  <!-- LOGIN VIA -->
+  <div class="login-section">
+    <span class="login-label">Login Via</span>
+    <div class="chips" id="chips-login">
+      <div class="chip" onclick="pickChip(this)">Google</div>
+      <div class="chip" onclick="pickChip(this)">Facebook</div>
+      <div class="chip" onclick="pickChip(this)">Email</div>
+      <div class="chip" onclick="pickChip(this)">Apple ID</div>
+      <div class="chip" onclick="pickChip(this)">Guest</div>
+      <div class="chip chip-other" onclick="pickChip(this, true)">Lainnya ✏️</div>
+    </div>
+    <input type="text" class="login-manual" id="login-manual"
+      placeholder="Sebutkan platform login..."
+      oninput="manualInput(this)"
+      style="display:none; margin-top:8px;"/>
+  </div>
+
+  <div class="field">
+    <label>Server</label>
+    <input type="text" id="server" placeholder="Contoh: Asia, Global, JP, ID..."/>
+  </div>
+
+  <div class="field">
+    <label>Level</label>
+    <input type="text" id="level" placeholder="Contoh: 80, Max, 150..."/>
+  </div>
+
+  <div class="field">
+    <label>Character Limited <span class="opt">(opsional)</span></label>
+    <input type="text" id="charlim" placeholder="Contoh: Mika LE, Himari LE..."/>
+  </div>
+
+  <div class="field">
+    <label>Kelebihan Akun <span class="opt">(opsional)</span></label>
+    <textarea id="kelebihan" placeholder="Contoh: hero lengkap, rank tinggi, full skin..."></textarea>
+  </div>
+
+  <div class="section-title">Detail Tambahan</div>
+
+  <div class="field">
+    <label>Nego</label>
+    <div class="radio-group" id="rg-nego">
+      <div class="radio-btn selected" onclick="pick('nego','Bisa',this)">Bisa</div>
+      <div class="radio-btn" onclick="pick('nego','Tidak',this)">Tidak</div>
+    </div>
+  </div>
+
+  <div class="field">
+    <label>Trade</label>
+    <div class="radio-group" id="rg-trade">
+      <div class="radio-btn selected" onclick="pick('trade','-',this)">Tidak</div>
+      <div class="radio-btn" onclick="pick('trade','Bisa',this)">Bisa</div>
+    </div>
+  </div>
+
+  <div class="field">
+    <label>Harga</label>
+    <input type="text" id="harga" placeholder="Contoh: 150.000"/>
+  </div>
+
+  <button class="gen-btn" onclick="generate()">✨ Buat Format</button>
+</div>
+
+<!-- RESULT -->
+<div class="result-section" id="result-section">
+  <div class="result-title">✅ Format siap!</div>
+  <div class="result-box" id="result-box"></div>
+  <div class="action-btns">
+    <button class="copy-btn" id="copy-btn" onclick="copyFormat()">📋 Salin</button>
+    <button class="wa-btn" onclick="kirimWA()">📲 Kirim ke Admin</button>
+  </div>
+  <button class="edit-btn" onclick="editForm()">← Edit Form</button>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  const state = { nego:'Bisa', trade:'-' };
+  let loginVal = '';
+  let generated = '';
+
+  function pickChip(el, isOther = false) {
+    document.querySelectorAll('.chip').forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+    const manualEl = document.getElementById('login-manual');
+    if (isOther) {
+      manualEl.style.display = 'block';
+      manualEl.focus();
+      loginVal = manualEl.value;
+    } else {
+      manualEl.style.display = 'none';
+      manualEl.value = '';
+      loginVal = el.textContent;
+    }
+  }
+
+  function manualInput(el) {
+    loginVal = el.value;
+  }
+
+  function pick(key, val, el) {
+    state[key] = val;
+    el.closest('.radio-group').querySelectorAll('.radio-btn').forEach(b => b.classList.remove('selected'));
+    el.classList.add('selected');
+  }
+
+  function generate() {
+    const nohp    = document.getElementById('nohp').value.trim();
+    const game    = document.getElementById('game').value.trim();
+    const server  = document.getElementById('server').value.trim();
+    const level   = document.getElementById('level').value.trim();
+    const charlim = document.getElementById('charlim').value.trim();
+    const kelebih = document.getElementById('kelebihan').value.trim();
+    const harga   = document.getElementById('harga').value.trim();
+    const manual  = document.getElementById('login-manual').value.trim();
+
+    // Final login value
+    const finalLogin = manual || loginVal;
+
+    if (!nohp)        { showToast('⚠️ Isi nomor HP dulu!'); return; }
+    if (!game)        { showToast('⚠️ Isi nama game dulu!'); return; }
+    if (!finalLogin)  { showToast('⚠️ Pilih atau isi Login Via dulu!'); return; }
+    if (!server)      { showToast('⚠️ Isi server dulu!'); return; }
+    if (!level)       { showToast('⚠️ Isi level dulu!'); return; }
+    if (!harga)       { showToast('⚠️ Isi harga dulu!'); return; }
+
+    const kodePenjual = nohp.replace(/\D/g,'').slice(-4);
+
+    generated =
+`📌🅸🅽🅸 🅱︎🆄︎🅺︎🅰︎🅽︎ 🅰︎🅺︎🆄︎🅽︎ 🅰︎🅳︎🅼︎🅸︎🅽︎📌
+
+𝙆𝙤𝙣𝙩𝙖𝙠 𝙖𝙙𝙢𝙞𝙣: 082123154354
+𝙆𝙤𝙙𝙚 𝙥𝙚𝙣𝙟𝙪𝙖𝙡: ${kodePenjual}
+
+𝙙𝙚𝙩𝙖𝙞𝙡 𝙖𝙠𝙪𝙣:
+Login via: ${finalLogin}
+Server: ${server}
+Level: ${level}${charlim ? '\nCharacter limited: ' + charlim : ''}${kelebih ? '\n\nKelebihan akun:\n' + kelebih : ''}
+
+𝙙𝙚𝙩𝙖𝙞𝙡 𝙩𝙖𝙢𝙗𝙖𝙝𝙖𝙣
+𝙉𝙚𝙜𝙤= ${state.nego}
+𝙏𝙧𝙖𝙙𝙚= ${state.trade}
+𝙃𝙖𝙧𝙜𝙖= ${harga}
+
+⚠️ 𝙨𝙞𝙡𝙖𝙝𝙠𝙖𝙣 𝙘𝙝𝙖𝙩 𝙖𝙙𝙢𝙞𝙣 𝙙𝙖𝙣 𝙗𝙚𝙧𝙞𝙠𝙖𝙣 𝙠𝙤𝙙𝙚 𝙥𝙚𝙣𝙟𝙪𝙖𝙡 𝙖𝙜𝙖𝙧 𝙖𝙙𝙢𝙞𝙣 𝙘𝙚𝙠 𝙡𝙖𝙣𝙜𝙨𝙪𝙣𝙜 𝙠𝙚𝙩𝙚𝙧𝙨𝙚𝙙𝙞𝙖𝙖𝙣 𝙗𝙖𝙧𝙖𝙣𝙜. 𝙉𝙤 𝙖𝙙𝙢𝙞𝙣 𝙝𝙖𝙣𝙮𝙖 082123154354 𝙨𝙚𝙡𝙖𝙞𝙣 𝙞𝙩𝙪 𝙘𝙡𝙤𝙣𝙚
+
+#${game.replace(/\s/g,'').toLowerCase()} #jualakun${game.replace(/\s/g,'').toLowerCase()} #luunastore`;
+
+    document.getElementById('result-box').textContent = generated;
+    document.getElementById('form-section').style.display = 'none';
+    document.getElementById('result-section').style.display = 'block';
+    window.scrollTo(0, 0);
+  }
+
+  function copyFormat() {
+    navigator.clipboard.writeText(generated).catch(() => {
+      const el = document.createElement('textarea');
+      el.value = generated; document.body.appendChild(el);
+      el.select(); document.execCommand('copy'); document.body.removeChild(el);
+    });
+    const btn = document.getElementById('copy-btn');
+    btn.textContent = '✅ Disalin!'; btn.classList.add('copied');
+    showToast('✅ Format disalin!');
+    setTimeout(() => { btn.textContent = '📋 Salin'; btn.classList.remove('copied'); }, 2000);
+  }
+
+  function kirimWA() {
+    window.open('https://wa.me/6282123154354?text=' + encodeURIComponent(generated), '_blank');
+  }
+
+  function editForm() {
+    document.getElementById('form-section').style.display = 'block';
+    document.getElementById('result-section').style.display = 'none';
+    window.scrollTo(0, 0);
+  }
+
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg; t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2500);
+  }
+</script>
+</body>
+</html>
